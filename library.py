@@ -25,7 +25,22 @@ class Library:
             for book in self.books:
                 file.write(f'{book["title"]}, {book["author"]}, {book["year"]}, {book["pages"]}\n')
 
+    def list_books(self):
+        if not self.books:
+            print("no books in the library.")
+        else:
+            print("library books:")
+            for book in self.books:
+                print(f"- {book['title']} by {book['author']}")
+
+    def view_book(self, title):
+        for book in self.books:
+            if book["title"].lower() == title.lower():
+                return book
+        return None
+
 # test functionality
 if __name__ == "__main__":
     library = Library("books.txt")
-    print("books loaded:", library.books)
+    library.list_books()
+    print("details:", library.view_book("title of first book"))
