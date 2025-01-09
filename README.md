@@ -1,5 +1,10 @@
 # Library Management Software  
 
+## Showcase  
+Here’s a demonstration of how the calculator looks in action:
+
+![Showcase](Assets/showcase.gif)
+
 ## Overview  
 This project is part of the **BTEC Level 3 Diploma in Computing - Unit 16: Object-Oriented Programming**. The goal is to design and develop an object-oriented solution for managing a small library system. The application demonstrates key programming principles, including **inheritance**, **polymorphism**, and **method overloading**, while also featuring a **graphical user interface (GUI)** for usability.
 
