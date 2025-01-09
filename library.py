@@ -39,8 +39,27 @@ class Library:
                 return book
         return None
 
+    def add_book(self, title, author, year, pages):
+        self.books.append({
+            "title": title,
+            "author": author,
+            "year": year,
+            "pages": pages
+        })
+        self.save_books()
+
+    def delete_book(self, title):
+        for book in self.books:
+            if book["title"].lower() == title.lower():
+                self.books.remove(book)
+                self.save_books()
+                return True
+        return False
+
 # test functionality
 if __name__ == "__main__":
     library = Library("books.txt")
+    library.add_book("new book", "new author", "2022", "200")
     library.list_books()
-    print("details:", library.view_book("title of first book"))
+    library.delete_book("new book")
+    library.list_books()
