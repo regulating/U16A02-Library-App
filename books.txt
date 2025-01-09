@@ -1,0 +1,19 @@
+The Great Gatsby, F. Scott Fitzgerald, 1925, 218
+To Kill a Mockingbird, Harper Lee, 1960, 324
+1984, George Orwell, 1949, 328
+Moby Dick, Herman Melville, 1851, 635
+Pride and Prejudice, Jane Austen, 1813, 279
+The Catcher in the Rye, J.D. Salinger, 1951, 277
+Brave New World, Aldous Huxley, 1932, 311
+The Hobbit, J.R.R. Tolkien, 1937, 310
+War and Peace, Leo Tolstoy, 1869, 1225
+Anna Karenina, Leo Tolstoy, 1877, 864
+Crime and Punishment, Fyodor Dostoevsky, 1866, 671
+The Odyssey, Homer, -800, 541
+The Iliad, Homer, -762, 683
+Great Expectations, Charles Dickens, 1861, 505
+Jane Eyre, Charlotte Brontë, 1847, 500
+Les Misérables, Victor Hugo, 1862, 1232
+Don Quixote, Miguel de Cervantes, 1605, 863
+The Divine Comedy, Dante Alighieri, 1320, 798
+Ulysses, James Joyce, 1922, 730
