@@ -61,6 +61,7 @@ class GUISystem(Library):
         self.create_ui()
 
     def create_ui(self):
+        self.root.geometry("400x200")  # set the initial window size
         tk.Label(self.root, text="library system", font=("arial", 18)).pack(pady=10)
 
         frame = tk.Frame(self.root)
