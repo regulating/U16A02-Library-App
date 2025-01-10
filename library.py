@@ -57,33 +57,86 @@ class GUISystem(Library):
     def __init__(self, file_name):
         super().__init__(file_name)
         self.root = tk.Tk()
-        self.root.title("library system")
+        self.root.title("Library System")
         self.create_ui()
 
     def create_ui(self):
         self.root.geometry("400x200")  # set the initial window size
-        tk.Label(self.root, text="library system", font=("arial", 18)).pack(pady=10)
+        tk.Label(self.root, text="Library System", font=("Arial", 18)).pack(pady=10)
 
         frame = tk.Frame(self.root)
         frame.pack()
 
-        tk.Button(frame, text="list books", command=self.show_books).grid(row=0, column=0, padx=10, pady=5)
-        tk.Button(frame, text="add book", command=self.add_book_window).grid(row=0, column=1, padx=10, pady=5)
-        tk.Button(frame, text="delete book", command=self.delete_book_window).grid(row=1, column=0, padx=10, pady=5)
-        tk.Button(frame, text="view book", command=self.view_book_window).grid(row=1, column=1, padx=10, pady=5)
+        tk.Button(frame, text="List Books", command=self.show_books).grid(row=0, column=0, padx=10, pady=5)
+        tk.Button(frame, text="Add Book", command=self.add_book_window).grid(row=0, column=1, padx=10, pady=5)
+        tk.Button(frame, text="Delete Book", command=self.delete_book_window).grid(row=1, column=0, padx=10, pady=5)
+        tk.Button(frame, text="View Book", command=self.view_book_window).grid(row=1, column=1, padx=10, pady=5)
 
     def show_books(self):
         books = self.list_books()
-        messagebox.showinfo("books in library", "\n".join(books) if books else "no books available.")
+        if not books:
+            messagebox.showinfo("Books in Library", "No books available.")
+            return
+
+        # create a new window to display the books
+        books_window = tk.Toplevel(self.root)
+        books_window.title("Books in Library")
+        books_window.geometry("300x400")
+
+        tk.Label(books_window, text="Books", font=("Arial", 16)).pack(pady=10)
+
+        # create a frame for the book list
+        list_frame = tk.Frame(books_window)
+        list_frame.pack(fill=tk.BOTH, expand=True)
+
+        # add a scrollbar
+        scrollbar = tk.Scrollbar(list_frame)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        # create a listbox with the scrollbar
+        listbox = tk.Listbox(list_frame, yscrollcommand=scrollbar.set, height=20, width=40)
+        listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        # configure the scrollbar to work with the listbox
+        scrollbar.config(command=listbox.yview)
+
+        # populate the listbox with book titles
+        for book in books:
+            listbox.insert(tk.END, book)
+
+        def open_book_details(event):
+            # get the selected book title
+            selected_book = listbox.get(tk.ANCHOR)
+            if selected_book:
+                book = self.view_book(selected_book)
+                if book:
+                    # open a new window showing the book details
+                    details_window = tk.Toplevel(self.root)
+                    details_window.title(f"Details of {book['title']}")
+                    details_window.geometry("300x200")
+
+                    # display book details
+                    details_text = (
+                        f"Title: {book['title']}\n"
+                        f"Author: {book['author']}\n"
+                        f"Year: {book['year']}\n"
+                        f"Pages: {book['pages']}"
+                    )
+                    tk.Label(details_window, text=details_text, justify=tk.LEFT, font=("Arial", 12)).pack(pady=20)
+                else:
+                    messagebox.showwarning("Error", "Book not found!")
+
+        # bind a double-click event to open the details of the selected book
+        listbox.bind("<Double-1>", open_book_details)
 
     def add_book_window(self):
         add_window = tk.Toplevel(self.root)
-        add_window.title("add book")
+        add_window.title("Add Book")
 
-        tk.Label(add_window, text="title").grid(row=0, column=0, padx=5, pady=5)
-        tk.Label(add_window, text="author").grid(row=1, column=0, padx=5, pady=5)
-        tk.Label(add_window, text="year").grid(row=2, column=0, padx=5, pady=5)
-        tk.Label(add_window, text="pages").grid(row=3, column=0, padx=5, pady=5)
+        tk.Label(add_window, text="Title").grid(row=0, column=0, padx=5, pady=5)
+        tk.Label(add_window, text="Author").grid(row=1, column=0, padx=5, pady=5)
+        tk.Label(add_window, text="Year").grid(row=2, column=0, padx=5, pady=5)
+        tk.Label(add_window, text="Pages").grid(row=3, column=0, padx=5, pady=5)
 
         title_entry = tk.Entry(add_window)
         author_entry = tk.Entry(add_window)
@@ -97,46 +150,46 @@ class GUISystem(Library):
 
         def add():
             self.add_book(title_entry.get(), author_entry.get(), year_entry.get(), pages_entry.get())
-            messagebox.showinfo("success", "book added successfully!")
+            messagebox.showinfo("Success", "Book added successfully!")
             add_window.destroy()
 
-        tk.Button(add_window, text="add", command=add).grid(row=4, column=0, columnspan=2, pady=10)
+        tk.Button(add_window, text="Add", command=add).grid(row=4, column=0, columnspan=2, pady=10)
 
     def delete_book_window(self):
         delete_window = tk.Toplevel(self.root)
-        delete_window.title("delete book")
+        delete_window.title("Delete Book")
 
-        tk.Label(delete_window, text="title").grid(row=0, column=0, padx=5, pady=5)
+        tk.Label(delete_window, text="Title").grid(row=0, column=0, padx=5, pady=5)
         title_entry = tk.Entry(delete_window)
         title_entry.grid(row=0, column=1, padx=5, pady=5)
 
         def delete():
             if self.delete_book(title_entry.get()):
-                messagebox.showinfo("success", "book deleted successfully!")
+                messagebox.showinfo("Success", "Book deleted successfully!")
             else:
-                messagebox.showwarning("error", "book not found!")
+                messagebox.showwarning("Error", "Book not found!")
             delete_window.destroy()
 
-        tk.Button(delete_window, text="delete", command=delete).grid(row=1, column=0, columnspan=2, pady=10)
+        tk.Button(delete_window, text="Delete", command=delete).grid(row=1, column=0, columnspan=2, pady=10)
 
     def view_book_window(self):
         view_window = tk.Toplevel(self.root)
-        view_window.title("view book")
+        view_window.title("View Book")
 
-        tk.Label(view_window, text="title").grid(row=0, column=0, padx=5, pady=5)
+        tk.Label(view_window, text="Title").grid(row=0, column=0, padx=5, pady=5)
         title_entry = tk.Entry(view_window)
         title_entry.grid(row=0, column=1, padx=5, pady=5)
 
         def view():
             book = self.view_book(title_entry.get())
             if book:
-                details = f"title: {book['title']}\nauthor: {book['author']}\nyear: {book['year']}\npages: {book['pages']}"
-                messagebox.showinfo("book details", details)
+                details = f"Title: {book['title']}\nAuthor: {book['author']}\nYear: {book['year']}\nPages: {book['pages']}"
+                messagebox.showinfo("Book Details", details)
             else:
-                messagebox.showwarning("error", "book not found!")
+                messagebox.showwarning("Error", "Book not found!")
             view_window.destroy()
 
-        tk.Button(view_window, text="view", command=view).grid(row=1, column=0, columnspan=2, pady=10)
+        tk.Button(view_window, text="View", command=view).grid(row=1, column=0, columnspan=2, pady=10)
 
     def run(self):
         self.root.mainloop()
