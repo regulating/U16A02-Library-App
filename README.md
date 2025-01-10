@@ -1,7 +1,7 @@
 # Library Management Software  
 
 ## Showcase  
-Here’s a demonstration of how the calculator looks in action:
+Here’s a demonstration of how the Library System looks in action:
 
 ![Showcase](Assets/showcase.gif)
 
