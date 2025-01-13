@@ -53,6 +53,23 @@ class Library:
                 return True
         return False
 
+class DigitalLibrary(Library):
+    def add_book(self, title, author, year, pages, file_format):
+        self.books.append({
+            "title": title,
+            "author": author,
+            "year": year,
+            "pages": pages,
+            "file_format": file_format
+        })
+        self.save_books()
+
+    def view_book(self, title):
+        for book in self.books:
+            if book["title"].lower() == title.lower():
+                return book
+        return None
+
 class GUISystem(Library):
     def __init__(self, file_name):
         super().__init__(file_name)
